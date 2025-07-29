@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GSave - GCash Style</title>
+<style>
+  /* GCash blue gradient background */
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+  }
+
+  .container {
+    max-width: 400px;
+    margin: 3rem auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  h1 {
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+  }
+
+  select, input[type="text"], input[type="number"], input[type="date"] {
+    width: 100%;
+    padding: 0.5rem 0.6rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    border: none;
+    font-size: 1rem;
+  }
+
+  input::placeholder {
+    color: #ccc;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  button {
+    background-color: #00b14f;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    flex: 1;
+    margin: 0 0.2rem;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #008a39;
+  }
+
+  .summary {
+    margin-top: 2rem;
+    background-color: rgba(255, 255, 255, 0.15);
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .summary b {
+    display: block;
+    margin-bottom: 0.6rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>GSave</h1>
+
+  <label for="bank">Choose Bank</label>
+  <select id="bank" name="bank">
+    <option value="cimb">CIMB Bank</option>
+    <option value="bpi">BPI</option>
+    <option value="metrobank">Metrobank</option>
+  </select>
+
+  <label for="amount">Amount to Save (₱)</label>
+  <input
+    id="amount"
+    name="amount"
+    type="number"
+    min="500"
+    step="100"
+    placeholder="e.g. 2000"
+  />
+  <small>Minimum amount is ₱500 (in multiples of 100)</small>
+
+  <label for="goal">Savings Goal</label>
+  <input
+    id="goal"
+    name="goal"
+    type="text"
+    placeholder="e.g. Travel Fund, Emergency Savings"
+  />
+
+  <label for="date">Target Date</label>
+  <input id="date" name="date" type="date" />
+
+  <label for="frequency">Frequency</label>
+  <select id="frequency" name="frequency">
+    <option value="one-time">One-time</option>
+    <option value="monthly">Monthly</option>
+    <option value="weekly">Weekly</option>
+  </select>
+
+  <div class="buttons">
+    <button type="button" onclick="proceedToSave()">Proceed to Save</button>
+    <button type="reset">Reset</button>
+  </div>
+
+  <div class="summary" id="summary">
+    <b>Summary:</b>
+    <p>Bank: -</p>
+    <p>Amount: ₱0</p>
+    <p>Goal: -</p>
+    <p>Target Date: -</p>
+    <p>Frequency: One-time</p>
+  </div>
+</div>
+
+<script>
+  function proceedToSave() {
+    const bankSelect = document.getElementById('bank');
+    const amountInput = document.getElementById('amount');
+    const goalInput = document.getElementById('goal');
+    const dateInput = document.getElementById('date');
+    const freqSelect = document.getElementById('frequency');
+    const summaryDiv = document.getElementById('summary');
+
+    summaryDiv.innerHTML = `
+      <b>Summary:</b>
+      <p>Bank: ${bankSelect.options[bankSelect.selectedIndex].text}</p>
+      <p>Amount: ₱${amountInput.value || 0}</p>
+      <p>Goal: ${goalInput.value || '-'}</p>
+      <p>Target Date: ${dateInput.value || '-'}</p>
+      <p>Frequency: ${freqSelect.options[freqSelect.selectedIndex].text}</p>
+    `;
+  }
+</script>
+
+</body>
+</html>

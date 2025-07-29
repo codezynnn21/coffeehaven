@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Frameset Example with Top Row</title>
+</head>
+<frameset rows="20%, 90%">
+  <frame src="top1.html" name="topFrame">
+    <frameset cols="25%, 75%">
+      <frame src="left_frame1.html"name="leftFrame">
+     <frame src="bottom_frame.html"name="bottomFrame">
+     </frameset>
+</frameset>
+<noframes>
+  <body>
+    <p>This page requires a browser that supports frames.</p>
+  </body>
+</noframes>
+</html>

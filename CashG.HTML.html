@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login to CashG</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #007bff, #00c6ff);
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .login-box {
+      background-color: #007bff;
+      margin: 100px auto;
+      padding: 30px;
+      border-radius: 20px;
+      width: 80%;
+      max-width: 400px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      color: white;
+      text-align: center;
+    }
+    .login-box img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+    input[type="text"], input[type="password"] {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 10px;
+    }
+    button {
+      background-color: cyan;
+      color: black;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .message {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .error {
+      color: yellow;
+    }
+    .success {
+      color: lightgreen;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <!-- Logo image -->
+    <img src="/storage/emulated/0/Pictures/CashG.png" alt="CashG Logo">
+    
+    <h2>Login to CashG</h2>
+    <form id="loginForm">
+      <label for="username">Username</label><br>
+      <input type="text" id="username" name="username" placeholder="Enter Username" required><br>
+
+      <label for="password">Password</label><br>
+      <input type="password" id="password" name="password" placeholder="Enter Password" required><br>
+
+      <button type="submit">Login</button>
+      <p id="message" class="message"></p>
+    </form>
+  </div>
+
+  <script>
+    const correctUsername = "jhonmarkgabriel149@gmail.com";
+    const correctPassword = "102504";
+
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const message = document.getElementById("message");
+
+      if (username === correctUsername && password === correctPassword) {
+        message.textContent = "Login successful! Redirecting...";
+        message.className = "message success";
+
+        // Delay redirect by 1.5 seconds
+        setTimeout(function() {
+          window.location.href = "dashboard.html";
+        }, 1500);
+      } else {
+        message.textContent = "Invalid username or password. Please try again.";
+        message.className = "message error";
+      }
+    });
+  </script>
+</body>
+</html>

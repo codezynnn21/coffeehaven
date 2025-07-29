@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Send Money - CashG</title>
+  <style>
+    /* Background Gradient or Image */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: white;
+      padding: 30px 25px;
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 350px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #0072ff;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .back-home {
+      margin-top: 15px;
+      display: block;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .back-home:hover {
+      text-decoration: underline;
+    }
+
+    /* Confirmation Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 20% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 320px;
+      text-align: center;
+    }
+
+    .modal-buttons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .modal-buttons button {
+      width: 45%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .btn-cancel {
+      background-color: #e0e0e0;
+      color: #333;
+    }
+
+    .btn-confirm {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .btn-cancel:hover {
+      background-color: #ccc;
+    }
+
+    .btn-confirm:hover {
+      background-color: #218838;
+    }
+
+    /* Loading Animation */
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      font-size: 18px;
+      color: #0072ff;
+    }
+
+    .spinner {
+      border: 5px solid #ccc;
+      border-top: 5px solid #007bff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 15px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Send Money via <strong>CashG</strong></h2>
+  <form id="sendMoneyForm" action="success.html" method="post">
+    <input type="text" id="mobile" name="mobile" placeholder="Enter Mobile Number" required>
+    <input type="number" id="amount" name="amount" placeholder="Enter Amount" required>
+    <button type="submit">Send Money</button>
+  </form>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirmationModal" class="modal">
+  <div class="modal-content">
+    <p id="confirmText">Are you sure?</p>
+    <div class="modal-buttons">
+      <button class="btn-cancel" id="cancelBtn">Cancel</button>
+      <button class="btn-confirm" id="confirmBtn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  Sending Money...
+</div>
+
+<script>
+  const form = document.getElementById("sendMoneyForm");
+  const modal = document.getElementById("confirmationModal");
+  const confirmText = document.getElementById("confirmText");
+  const cancelBtn = document.getElementById("cancelBtn");
+  const confirmBtn = document.getElementById("confirmBtn");
+  const loadingOverlay = document.getElementById("loadingOverlay");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const mobile = document.getElementById("mobile").value;
+    const amount = document.getElementById("amount").value;
+
+    confirmText.innerText = `Send ₱${amount} to ${mobile}?`;
+    modal.style.display = "block";
+  });
+
+  cancelBtn.onclick = () => {
+    modal.style.display = "none";
+  };
+
+  confirmBtn.onclick = () => {
+    modal.style.display = "none";
+    loadingOverlay.style.display = "flex";
+
+    // Fake delay before submit
+    setTimeout(() => {
+      form.submit();
+    }, 2000);
+  };
+
+  window.onclick = function (event) {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  };
+</script>
+
+</body>
+</html>

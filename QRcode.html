@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GCash QR Code</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      margin-top: 50px;
+    }
+    #qrcode {
+      margin: 20px auto;
+      width: fit-content;
+    }
+  </style>
+</head>
+<body>
+  <h2>Scan to Pay via CashG</h2>
+  
+  <!-- Container for QR Code -->
+  <div id="qrcode"></div>
+
+  <script>
+    // Replace this with your actual GCash number or payment link
+    var gcashData = "09171234567"; // Or use a GCash QR URL if available
+
+    // Generate QR Code
+    new QRCode(document.getElementById("qrcode"), {
+      text: gcashData,
+      width: 200,
+      height: 200
+    });
+  </script>
+</body>
+</html>

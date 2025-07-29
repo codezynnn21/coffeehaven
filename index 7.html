@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GCash - View All Services</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f3f7;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #0070ba;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .service {
+      background: #e3f2fd;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    .service:hover {
+      background: #bbdefb;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>View All GCash Services</h1>
+    <div class="service-grid">
+      <div class="service">Send Money</div>
+      <div class="service">Buy Load</div>
+      <div class="service">Pay Bills</div>
+      <div class="service">GSave</div>
+      <div class="service">GInvest</div>
+      <div class="service">Borrow</div>
+      <div class="service">QR Code</div>
+      <div class="service">Inbox</div>
+      <div class="service">Transaction History</div>
+      <div class="service">Profile</div>
+    </div>
+  </div>
+</body>
+</html>

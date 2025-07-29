@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GCash Home</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #0084ff;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    .logo {
+      width: 100px;
+      margin: 20px auto;
+    }
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 30px;
+    }
+    .menu button {
+      background-color: white;
+      color: #0084ff;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .menu button:hover {
+      background-color: #e0f0ff;
+    }
+  </style>
+</head>
+<body>
+
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/GCash_Logo.svg/512px-GCash_Logo.svg.png" alt="GCash Logo" class="logo">
+
+  <h1>Welcome to GCash</h1>
+  <p>Select a service below:</p>
+
+  <div class="menu">
+    <button onclick="alert('Send Money Clicked')">Send Money</button>
+    <button onclick="alert('Pay Bills Clicked')">Pay Bills</button>
+    <button onclick="alert('Buy Load Clicked')">Buy Load</button>
+    <button onclick="alert('GSave Clicked')">GSave</button>
+  </div>
+
+</body>
+</html>

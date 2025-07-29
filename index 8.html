@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GInvest</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #00a859, #006b3c);
+    color: white;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .container {
+    background: #009a4d;
+    padding: 30px 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    width: 320px;
+  }
+
+  h1 {
+    margin-bottom: 25px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  label {
+    display: block;
+    margin: 15px 0 5px;
+    font-weight: 600;
+  }
+
+  select, input[type="number"] {
+    width: 100%;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+  }
+
+  button {
+    background-color: #00c853;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 48%;
+  }
+
+  button:hover {
+    background-color: #00e676;
+  }
+
+  ::placeholder {
+    color: #b2fab4;
+  }
+
+  #message {
+    margin-top: 20px;
+    padding: 15px;
+    background: #00e676;
+    color: #004d40;
+    border-radius: 8px;
+    font-weight: 700;
+    display: none;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>GInvest</h1>
+    <form id="investForm">
+      <label for="fund">Choose Fund</label>
+      <select id="fund" name="fund">
+        <option>ATRAM Peso Money Market Fund</option>
+        <option>Fund A</option>
+        <option>Fund B</option>
+      </select>
+
+      <label for="amount">Amount to Invest (₱)</label>
+      <input type="number" id="amount" name="amount" placeholder="e.g. 1000" />
+
+      <label for="risk">Risk Profile</label>
+      <select id="risk" name="risk">
+        <option>Conservative</option>
+        <option>Moderate</option>
+        <option>Aggressive</option>
+      </select>
+
+      <div class="buttons">
+        <button type="submit">Proceed to Invest</button>
+        <button type="reset">Reset</button>
+      </div>
+    </form>
+
+    <div id="message"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('investForm');
+    const messageDiv = document.getElementById('message');
+
+    // Load saved values on page load
+    window.onload = () => {
+      if(localStorage.getItem('lastFund')) {
+        document.getElementById('fund').value = localStorage.getItem('lastFund');
+      }
+      if(localStorage.getItem('lastAmount')) {
+        document.getElementById('amount').value = localStorage.getItem('lastAmount');
+      }
+      if(localStorage.getItem('lastRisk')) {
+        document.getElementById('risk').value = localStorage.getItem('lastRisk');
+      }
+    };
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault(); // Pigilan ang default form submission
+
+      const fund = document.getElementById('fund').value;
+      const amount = parseFloat(document.getElementById('amount').value);
+      const risk = document.getElementById('risk').value;
+
+      // Validation
+      if (isNaN(amount) || amount <= 0) {
+        alert('Please enter a valid numeric amount greater than 0.');
+        return;
+      }
+      if (amount < 500) {
+        alert('Minimum investment amount is ₱500.');
+        return;
+      }
+
+      // Save inputs to localStorage
+      localStorage.setItem('lastFund', fund);
+      localStorage.setItem('lastAmount', amount);
+      localStorage.setItem('lastRisk', risk);
+
+      // Show processing message
+      messageDiv.style.display = 'block';
+      messageDiv.textContent = 'Processing your investment, please wait...';
+
+      // Simulate delay
+      setTimeout(() => {
+        messageDiv.textContent = `Invested ₱${amount.toFixed(2)} in ${fund} with a ${risk} risk profile successfully!`;
+        form.reset();
+      }, 2000);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Buy Load</title>
+<style>
+  /* Background styles */
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #87ceeb, #00bfff);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .container {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 400px;
+  }
+  h1 {
+    margin-top: 0;
+    text-align: center;
+  }
+  label {
+    display: block;
+    margin-top: 15px;
+    color: #e0e0e0;
+  }
+  input, select, textarea, button {
+    margin-top: 5px;
+    padding: 10px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+  input, select, textarea {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+  }
+  textarea::placeholder,
+  input::placeholder {
+    color: #999;
+  }
+  .inline-group {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+  .inline-group > * {
+    flex: 1;
+  }
+  .inline-group label {
+    flex: 0 0 100px;
+    margin-top: 0;
+    color: #e0e0e0;
+  }
+  .btn-group {
+    margin-top: 20px;
+    text-align: center;
+  }
+  button {
+    background-color: #764ba2;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #5a3680;
+  }
+  .hidden {
+    display: none;
+  }
+  .message {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #d4d4d4;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Buy Load</h1>
+
+  <form id="loadForm">
+    <label for="mobileNumber">Mobile Number</label>
+    <input type="tel" id="mobileNumber" placeholder="e.g. 09171234567" required pattern="09\d{9}" />
+
+    <div class="message" id="networkName">Network: Unknown</div>
+
+    <div class="inline-group">
+      <label for="loadType">Load Type</label>
+      <select id="loadType" required>
+        <option value="">Select Type</option>
+        <option value="Smart">Smart</option>
+        <option value="Dito">Dito</option>
+        <option value="Globe">Globe</option>
+        <option value="TNT">TNT</option>
+        <option value="TM">TM</option>
+      </select>
+    </div>
+
+    <div class="inline-group">
+      <label for="loadAmount">Load Amount</label>
+      <select id="loadAmount" required>
+        <option value="">Select Amount</option>
+        <option value="10">₱10</option>
+        <option value="20">₱20</option>
+        <option value="50">₱50</option>
+        <option value="100">₱100</option>
+        <option value="300">₱300</option>
+        <option value="500">₱500</option>
+      </select>
+    </div>
+
+    <div class="message" id="totalAmount">Total: ₱0 (incl. ₱5 fee)</div>
+
+    <label for="message">Message (Optional)</label>
+    <textarea id="message" placeholder="e.g. Pang data mo" rows="3"></textarea>
+
+    <button type="button" id="buyBtn">Buy Load</button>
+  </form>
+
+  <div id="confirmation" class="hidden">
+    <p>Confirm sending load...</p>
+    <button id="confirmYes">Yes</button>
+    <button id="confirmCancel">Cancel</button>
+  </div>
+</div>
+
+<script>
+  const mobileNumberInput = document.getElementById('mobileNumber');
+  const networkNameDiv = document.getElementById('networkName');
+  const loadAmountSelect = document.getElementById('loadAmount');
+  const totalAmountDiv = document.getElementById('totalAmount');
+  const buyBtn = document.getElementById('buyBtn');
+  const confirmationDiv = document.getElementById('confirmation');
+  const confirmYesBtn = document.getElementById('confirmYes');
+  const confirmCancelBtn = document.getElementById('confirmCancel');
+  const loadForm = document.getElementById('loadForm');
+
+  const FEE = 5;
+
+  function detectNetwork(number) {
+    if (!number.startsWith('09')) return 'Unknown';
+
+    const prefix4 = number.substring(0, 4);
+    const prefix5 = number.substring(0, 5);
+
+    const networks = {
+      // Globe prefixes
+      '0917': 'Globe',
+      '0920': 'Globe',
+      '0921': 'Globe',
+      '0939': 'Globe',
+      '0999': 'Globe',
+      // Smart prefixes
+      '0905': 'Smart',
+      '0918': 'Smart',
+      '0919': 'Smart',
+      '0928': 'Smart',
+      '0930': 'Smart',
+      '0946': 'Smart',
+      '0975': 'Smart',
+      // Dito prefixes
+      '0997': 'Dito',
+      '0998': 'Dito',
+      '0999': 'Dito',  // overlaps with Globe - handle carefully if needed
+      // TNT prefixes
+      '0937': 'TNT',
+      '0946': 'TNT',
+      '0977': 'TNT',
+      // TM prefixes
+      '0926': 'TM',
+      '0935': 'TM',
+      '0936': 'TM',
+    };
+
+    // First check 5-digit prefixes if necessary
+    if (networks[prefix5]) return networks[prefix5];
+
+    // Then check 4-digit prefix
+    return networks[prefix4] || 'Unknown';
+  }
+
+  function updateNetwork() {
+    const number = mobileNumberInput.value;
+    networkNameDiv.textContent = 'Network: ' + detectNetwork(number);
+  }
+
+  function updateTotal() {
+    const amount = parseInt(loadAmountSelect.value) || 0;
+    if (amount === 0) {
+      totalAmountDiv.textContent = 'Select load amount';
+    } else {
+      totalAmountDiv.textContent = `Total: ₱${amount + FEE} (incl. ₱${FEE} fee)`;
+    }
+  }
+
+  mobileNumberInput.addEventListener('input', updateNetwork);
+  loadAmountSelect.addEventListener('change', updateTotal);
+
+  buyBtn.addEventListener('click', () => {
+    if (!loadForm.checkValidity()) {
+      alert('Please fill out all required fields correctly.');
+      return;
+    }
+    confirmationDiv.classList.remove('hidden');
+  });
+
+  confirmYesBtn.addEventListener('click', () => {
+    alert('Load purchase confirmed!');
+    confirmationDiv.classList.add('hidden');
+    loadForm.reset();
+    updateNetwork();
+    updateTotal();
+  });
+
+  confirmCancelBtn.addEventListener('click', () => {
+    confirmationDiv.classList.add('hidden');
+  });
+
+  // Initialize UI on page load
+  updateNetwork();
+  updateTotal();
+</script>
+
+</body>
+</html>
